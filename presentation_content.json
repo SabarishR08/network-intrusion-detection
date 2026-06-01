@@ -1,0 +1,18 @@
+{
+  "slides": [
+    {"slide": 1, "lines": ["PS40 - AI-Powered Network Intrusion Detection System", "IBM AICTE Internship Project", "Sabarish R", "B.Tech CSBS"]},
+    {"slide": 2, "lines": ["Student Profile", "Sabarish R", "sabarish.edu2024@gmail.com", "B.Tech CSBS", "2nd Year, 4th Semester", "Add mobile number and college name"]},
+    {"slide": 3, "lines": ["Problem Statement - PS40", "Detect intrusion patterns in network connection records", "Classify traffic as normal or anomaly", "Support security monitoring with actionable output"]},
+    {"slide": 4, "lines": ["Proposed Solution", "Modular ML pipeline", "Validation-driven model selection", "Inference on unlabeled test data", "Exportable predictions and metrics"]},
+    {"slide": 5, "lines": ["Tech Stack", "Python", "pandas and numpy", "scikit-learn", "matplotlib", "Streamlit", "Joblib"]},
+    {"slide": 6, "lines": ["LangFlow Workflow", "Upload or query input", "Detection model node", "Granite explanation node", "Response formatting node"]},
+    {"slide": 7, "lines": ["Architecture", "Dataset ingestion", "Preprocessing and feature engineering", "Model training and evaluation", "Deployment through dashboard"]},
+    {"slide": 8, "lines": ["Agentic AI Role", "Explain detected threats", "Summarize anomalies for analysts", "Convert model output into narrative response"]},
+    {"slide": 9, "lines": ["Technology Used", "sklearn pipelines", "Random Forest", "Gradient Boosting", "Logistic Regression", "Visualization toolkit"]},
+    {"slide": 10, "lines": ["Novelty and Uniqueness", "Cybersecurity-first positioning", "Clean modular codebase", "Handles unlabeled test set safely", "IBM-ready narrative alignment"]},
+    {"slide": 11, "lines": ["Results", "Validation accuracy", "Precision, recall, F1", "ROC-AUC", "Confusion matrix"]},
+    {"slide": 12, "lines": ["GitHub Repository", "Public repository link", "README", "PPTX", "Source code", "Reports"]},
+    {"slide": 13, "lines": ["Future Scope", "Real-time packet streaming", "SOC integration", "Explainability views", "Multiclass attack detection"]},
+    {"slide": 14, "lines": ["Thank You", "Thank you for reviewing the project", "Contact details"]}
+  ]
+}
