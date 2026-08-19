@@ -1,7 +1,7 @@
 # network-intrusion-detection â€” daily improvement backlog
 # ML-based network intrusion detection system (Python, Streamlit, scikit-learn)
 
-- [ ] Add module-level docstrings to src/data_preprocessing.py
+- [x] Add module-level docstrings to src/data_preprocessing.py
 - [ ] Add module-level docstrings to src/feature_engineering.py
 - [ ] Add type hints to all functions in src/utils.py
 - [ ] Add type hints to all functions in src/predict.py
