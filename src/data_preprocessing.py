@@ -1,4 +1,7 @@
-"""Data loading and preprocessing helpers for the intrusion detection pipeline."""
+"""Data loading and preprocessing helpers for the intrusion detection pipeline.
+
+This module provides functions for loading datasets, normalizing labels, splitting features and targets, and building preprocessing pipelines.
+"""
 
 from __future__ import annotations
 
@@ -18,7 +21,6 @@ LOGGER = logging.getLogger(__name__)
 TARGET_COLUMN = "class"
 CATEGORICAL_COLUMNS = ["protocol_type", "service", "flag"]
 LABEL_MAP = {"anomaly": 0, "normal": 1}
-
 
 @dataclass(frozen=True)
 class DatasetBundle:
@@ -47,7 +49,9 @@ def encode_labels(frame: pd.DataFrame) -> pd.Series:
 
 
 def split_features_targets(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
-    features = frame.drop(columns=[TARGET_COLUMN], errors="ignore").copy()
+    features = frame.drop(columns=[TARGET_COLUMN], errors="ignorelater
+docstring
+copy())
     targets = encode_labels(frame)
     return features, targets
 
