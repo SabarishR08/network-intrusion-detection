@@ -1,0 +1,33 @@
+# network-intrusion-detection â€” daily improvement backlog
+# ML-based network intrusion detection system (Python, Streamlit, scikit-learn)
+
+- [ ] Add module-level docstrings to src/data_preprocessing.py
+- [ ] Add module-level docstrings to src/feature_engineering.py
+- [ ] Add type hints to all functions in src/utils.py
+- [ ] Add type hints to all functions in src/predict.py
+- [ ] Add a __version__ = "0.1.0" to src/__init__.py
+- [ ] Add logging.getLogger(__name__) to src/train_model.py replacing bare print() calls
+- [ ] Add logging.getLogger(__name__) to src/evaluate_model.py replacing bare print() calls
+- [ ] Add a constants.py in src/ for feature column names and label mappings
+- [ ] Add input validation in src/predict.py: check feature vector length before inference
+- [ ] Add a try/except around model.predict() in src/predict.py with a clear error message
+- [ ] Add a CONTRIBUTING.md at repo root with setup steps and dataset download instructions
+- [ ] Add a .editorconfig at repo root (4-space indent, utf-8, lf)
+- [ ] Add a requirements-dev.txt with pytest and ruff
+- [ ] Add a pytest.ini at repo root with testpaths = ["tests"]
+- [ ] Create tests/test_smoke.py that imports src and asserts the module loads without error
+- [ ] Add a .gitattributes normalising line endings
+- [ ] Add __all__ to src/__init__.py listing public symbols
+- [ ] Add elapsed-time logging around the model training loop
+- [ ] Add elapsed-time logging around the predict() call
+- [ ] Add a retry wrapper for any file I/O that could fail on missing dataset
+- [ ] Add a validate_dataframe(df, expected_columns) helper in src/utils.py
+- [ ] Add a normalise_labels(y) helper that maps raw label strings to int class indices
+- [ ] Add a confusion_matrix summary log after model evaluation
+- [ ] Add a save_model_metadata() function that writes model name, date, and accuracy to JSON
+- [ ] Add a load_model_with_fallback() that logs a warning if model file is missing
+- [ ] Add a dataclass PredictionResult(label, confidence, elapsed_ms) replacing plain dict
+- [ ] Add a dataclass TrainingMetrics(accuracy, precision, recall, f1) for evaluation output
+- [ ] Add a CLI --evaluate flag to main.py that runs evaluation and prints metrics
+- [ ] Add a CLI --version flag to main.py that prints the version from src/__init__.py
+- [ ] Add a brief Architecture section to README.md describing the preprocessing pipeline
