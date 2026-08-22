@@ -2,7 +2,7 @@
 # ML-based network intrusion detection system (Python, Streamlit, scikit-learn)
 
 - [x] Add module-level docstrings to src/data_preprocessing.py
-- [ ] Add module-level docstrings to src/feature_engineering.py
+- [x] Add module-level docstrings to src/feature_engineering.py
 - [ ] Add type hints to all functions in src/utils.py
 - [ ] Add type hints to all functions in src/predict.py
 - [ ] Add a __version__ = "0.1.0" to src/__init__.py

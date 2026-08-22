@@ -1,9 +1,9 @@
-"""Feature engineering helpers for the intrusion detection pipeline."""
+'''Feature engineering helpers for the intrusion detection pipeline.
 
+This module contains utility functions to process and align feature data for the intrusion detection system.
+The align_features function ensures that a DataFrame contains all expected columns, adding missing ones filled with NA values.'''
 from __future__ import annotations
-
 import pandas as pd
-
 
 def align_features(frame: pd.DataFrame, expected_columns: list[str]) -> pd.DataFrame:
     aligned = frame.copy()
