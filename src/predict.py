@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+from typing import TypedDict
 
 import joblib
 import pandas as pd
@@ -16,7 +17,13 @@ except ImportError:  # pragma: no cover - supports Streamlit's top-level imports
     from utils import MODEL_DIR  # type: ignore
 
 
-def load_bundle(model_path: Path | None = None) -> dict:
+class ModelBundle(TypedDict):
+    """Type definition for the model bundle dictionary."""
+    pipeline: object
+    feature_columns: list[str]
+
+
+def load_bundle(model_path: Path | None = None) -> ModelBundle:
     path = model_path or (MODEL_DIR / "model.pkl")
     if not path.exists():
         raise FileNotFoundError(f"Model bundle not found at {path}. Run training first.")
@@ -24,10 +31,10 @@ def load_bundle(model_path: Path | None = None) -> dict:
     # Basic validation of bundle content
     if not isinstance(bundle, dict) or "pipeline" not in bundle or "feature_columns" not in bundle:
         raise ValueError(f"Model bundle at {path} is missing required keys (pipeline, feature_columns).")
-    return bundle
+    return bundle  # type: ignore[return-value]
 
 
-def predict_frame(frame: pd.DataFrame, bundle: dict) -> pd.DataFrame:
+def predict_frame(frame: pd.DataFrame, bundle: ModelBundle) -> pd.DataFrame:
     pipeline = bundle["pipeline"]
     feature_columns = bundle["feature_columns"]
     features = frame.drop(columns=["class"], errors="ignore")
