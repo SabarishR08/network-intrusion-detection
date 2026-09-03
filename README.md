@@ -1,4 +1,61 @@
-# PS40 - AI-Powered Network Intrusion Detection System
+# Network Intrusion Detection
+
+![License](https://img.shields.io/badge/license-MIT-green) ![Language](https://img.shields.io/badge/language-Python-informational)
+
+
+## 📌 Overview
+
+AI-powered network intrusion detection system (PS40) — scikit-learn ML models with an interactive Streamlit dashboard
+
+## 🏗️ Architecture
+
+```text
+Browser / UI
+     │
+     ▼
+Streamlit app  (single process: UI + Python logic)
+     │
+     ├──▶ ML models — scikit-learn
+     └──▶ data / model files
+```
+
+## 🧰 Tech Stack
+
+- **Language:** Python
+- **Backend:** Streamlit
+- **ML:** scikit-learn
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.10+
+
+### 1. Clone
+
+```bash
+git clone https://github.com/SabarishR08/network-intrusion-detection.git
+cd network-intrusion-detection
+```
+
+### 2. Install dependencies
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 4. Run
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+Then open the URL printed in the terminal (default http://localhost:8501).
+
+
+---
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange.svg)](https://scikit-learn.org/)
@@ -171,6 +228,8 @@ This solution is framed as an ML intrusion detection engine with an Agentic AI l
 3. Commit focused changes.
 4. Open a pull request with a clear description.
 
-## License
+---
 
-Released under the MIT License. See [LICENSE](LICENSE).
+## 📄 License
+
+[MIT](LICENSE) — © 2026 Sabarish R.
