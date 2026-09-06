@@ -5,7 +5,7 @@
 - [x] Add module-level docstrings to src/feature_engineering.py
 - [x] Add type hints to all functions in src/utils.py
 - [x] Add type hints to all functions in src/predict.py
-- [ ] Add a __version__ = "0.1.0" to src/__init__.py
+- [x] Add a __version__ = "0.1.0" to src/__init__.py
 - [ ] Add logging.getLogger(__name__) to src/train_model.py replacing bare print() calls
 - [ ] Add logging.getLogger(__name__) to src/evaluate_model.py replacing bare print() calls
 - [ ] Add a constants.py in src/ for feature column names and label mappings
