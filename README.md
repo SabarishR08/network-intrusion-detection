@@ -3,11 +3,11 @@
 ![License](https://img.shields.io/badge/license-MIT-green) ![Language](https://img.shields.io/badge/language-Python-informational)
 
 
-## 📌 Overview
+## Overview
 
 AI-powered network intrusion detection system (PS40) — scikit-learn ML models with an interactive Streamlit dashboard
 
-## 🏗️ Architecture
+## Architecture
 
 ```text
 Browser / UI
@@ -19,13 +19,13 @@ Streamlit app  (single process: UI + Python logic)
      └──▶ data / model files
 ```
 
-## 🧰 Tech Stack
+## Tech Stack
 
 - **Language:** Python
 - **Backend:** Streamlit
 - **ML:** scikit-learn
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -230,6 +230,6 @@ This solution is framed as an ML intrusion detection engine with an Agentic AI l
 
 ---
 
-## 📄 License
+## License
 
 [MIT](LICENSE) — © 2026 Sabarish R.
