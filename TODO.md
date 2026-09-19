@@ -42,3 +42,19 @@
 - [ ] Add type hints to all function signatures in src/feature_engineering.py
 - [ ] Add a module-level docstring to scripts/create_demo.py describing what the demo script generates
 - [ ] Add a module-level docstring to app/streamlit_app.py describing the dashboard layout
+
+
+<!-- backlog top-up 2026-09-19 batch 2 (file+verb deduped) -->
+- [ ] Add a module-level docstring to src/evaluate_model.py describing the evaluation metrics
+- [ ] Add a module-level docstring to src/train_model.py describing the training pipeline
+- [ ] Add a module-level docstring to src/predict.py describing the prediction entry point
+- [ ] Add a module-level docstring to src/data_preprocessing.py describing the preprocessing steps
+- [ ] Add type hints to all function signatures in src/data_preprocessing.py
+- [ ] Add type hints to all function signatures in src/evaluate_model.py
+- [ ] Add type hints to all function signatures in src/train_model.py
+- [ ] Add type hints to all function signatures in src/predict.py
+- [ ] Add a module-level docstring to main.py describing the command-line entry point
+- [ ] Add type hints to all function signatures in scripts/create_demo.py
+- [ ] Add a module-level docstring to build_presentation.py describing the presentation builder
+- [ ] Add a module-level docstring to src/feature_engineering.py describing derived features
+- [ ] Add type hints to all function signatures in main.py
