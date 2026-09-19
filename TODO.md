@@ -58,3 +58,7 @@
 - [ ] Add a module-level docstring to build_presentation.py describing the presentation builder
 - [ ] Add a module-level docstring to src/feature_engineering.py describing derived features
 - [ ] Add type hints to all function signatures in main.py
+
+
+<!-- backlog top-up 2026-09-19 batch 2b (file+verb deduped) -->
+- [ ] Add a module-level docstring to src/__init__.py describing the package
