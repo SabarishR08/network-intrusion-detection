@@ -49,9 +49,7 @@ def encode_labels(frame: pd.DataFrame) -> pd.Series:
 
 
 def split_features_targets(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
-    features = frame.drop(columns=[TARGET_COLUMN], errors="ignorelater
-docstring
-copy())
+    features = frame.drop(columns=[TARGET_COLUMN], errors="ignore").copy()
     targets = encode_labels(frame)
     return features, targets
 
