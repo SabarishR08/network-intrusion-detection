@@ -31,3 +31,14 @@
 - [ ] Add a CLI --evaluate flag to main.py that runs evaluation and prints metrics
 - [ ] Add a CLI --version flag to main.py that prints the version from src/__init__.py
 - [ ] Add a brief Architecture section to README.md describing the preprocessing pipeline
+
+
+<!-- backlog top-up 2026-09-19 (file-verified) -->
+- [ ] Add logging.getLogger(__name__) to src/data_preprocessing.py replacing bare print() calls
+- [ ] Add logging.getLogger(__name__) to src/feature_engineering.py replacing bare print() calls
+- [ ] Add logging.getLogger(__name__) to src/predict.py replacing bare print() calls
+- [ ] Add a module-level docstring to src/utils.py describing the shared helpers
+- [ ] Add type hints to all function signatures in src/utils.py
+- [ ] Add type hints to all function signatures in src/feature_engineering.py
+- [ ] Add a module-level docstring to scripts/create_demo.py describing what the demo script generates
+- [ ] Add a module-level docstring to app/streamlit_app.py describing the dashboard layout
