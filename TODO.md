@@ -8,7 +8,7 @@
 - [x] Add a __version__ = "0.1.0" to src/__init__.py
 - [x] Create a smoke-test CI workflow at .github/workflows/ci.yml that runs python -m compileall on src/, scripts/, and main.py to catch syntax errors on every push and pull_request (no dependencies needed)
 - [ ] Add logging.getLogger(__name__) to src/train_model.py replacing bare print() calls
-- [ ] Add logging.getLogger(__name__) to src/evaluate_model.py replacing bare print() calls
+- [x] Add logging.getLogger(__name__) to src/evaluate_model.py replacing bare print() calls
 - [ ] Add a constants.py in src/ for feature column names and label mappings
 - [ ] Add input validation in src/predict.py: check feature vector length before inference
 - [ ] Add a try/except around model.predict() in src/predict.py with a clear error message
