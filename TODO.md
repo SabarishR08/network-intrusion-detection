@@ -9,7 +9,7 @@
 - [x] Create a smoke-test CI workflow at .github/workflows/ci.yml that runs python -m compileall on src/, scripts/, and main.py to catch syntax errors on every push and pull_request (no dependencies needed)
 - [ ] Add logging.getLogger(__name__) to src/train_model.py replacing bare print() calls
 - [x] Add logging.getLogger(__name__) to src/evaluate_model.py replacing bare print() calls
-- [ ] Add a constants.py in src/ for feature column names and label mappings
+- [x] Add a constants.py in src/ for feature column names and label mappings
 - [x] Add input validation in src/predict.py: check feature vector length before inference
 - [x] Add a try/except around model.predict() in src/predict.py with a clear error message
 - [ ] Add a CONTRIBUTING.md at repo root with setup steps and dataset download instructions
