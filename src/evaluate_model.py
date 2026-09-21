@@ -1,14 +1,16 @@
-"""Evaluation helpers for the PS40 intrusion detection project."""
+'''Evaluation helpers for the PS40 intrusion detection project.'''
 
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
 
+logger = logging.getLogger(__name__)
 
 def export_evaluation_report(y_true, y_pred, labels: list[str], output_dir: Path) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
