@@ -41,6 +41,16 @@ def predict_frame(frame: pd.DataFrame, bundle: ModelBundle) -> pd.DataFrame:
     features = align_features(features, feature_columns)
     if features.empty:
         raise ValueError("Uploaded CSV does not contain usable feature columns.")
+    
+    # Validate feature vector length matches model expectations
+    expected_len = len(feature_columns)
+    actual_len = features.shape[1]
+    if actual_len != expected_len:
+        raise ValueError(
+            f"Feature vector length mismatch: model expects {expected_len} features, "
+            f"but received {actual_len} after alignment."
+        )
+
     try:
         predictions = pipeline.predict(features)
     except Exception as exc:
