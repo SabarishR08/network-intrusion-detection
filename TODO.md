@@ -11,7 +11,7 @@
 - [x] Add logging.getLogger(__name__) to src/evaluate_model.py replacing bare print() calls
 - [ ] Add a constants.py in src/ for feature column names and label mappings
 - [x] Add input validation in src/predict.py: check feature vector length before inference
-- [ ] Add a try/except around model.predict() in src/predict.py with a clear error message
+- [x] Add a try/except around model.predict() in src/predict.py with a clear error message
 - [ ] Add a CONTRIBUTING.md at repo root with setup steps and dataset download instructions
 - [ ] Add a .editorconfig at repo root (4-space indent, utf-8, lf)
 - [ ] Add a requirements-dev.txt with pytest and ruff

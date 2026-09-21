@@ -54,7 +54,10 @@ def predict_frame(frame: pd.DataFrame, bundle: ModelBundle) -> pd.DataFrame:
     try:
         predictions = pipeline.predict(features)
     except Exception as exc:
-        raise RuntimeError(f"Model prediction failed: {exc}")
+        raise RuntimeError(
+            f"Model prediction failed: {exc}. "
+            f"Input shape: {features.shape}, columns: {list(features.columns)}"
+        )
 
     try:
         probabilities = pipeline.predict_proba(features)[:, 1]
@@ -77,13 +80,4 @@ def main() -> None:
     args = parser.parse_args()
 
     bundle = load_bundle(Path(args.model))
-    frame = pd.read_csv(args.input)
-    predictions = predict_frame(frame, bundle)
-    output_path = Path(args.output)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    predictions.to_csv(output_path, index=False)
-    print(f"Saved predictions to {output_path}")
-
-
-if __name__ == "__main__":
-    main()
+    frame
