@@ -17,7 +17,7 @@
 - [x] Add a requirements-dev.txt with pytest and ruff
 - [x] Add a pytest.ini at repo root with testpaths = ["tests"]
 - [x] Create tests/test_smoke.py that imports src and asserts the module loads without error
-- [ ] Add a .gitattributes normalising line endings
+- [x] Add a .gitattributes normalising line endings
 - [ ] Add __all__ to src/__init__.py listing public symbols
 - [ ] Add elapsed-time logging around the model training loop
 - [ ] Add elapsed-time logging around the predict() call
