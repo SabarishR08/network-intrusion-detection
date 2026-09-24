@@ -13,7 +13,7 @@
 - [x] Add input validation in src/predict.py: check feature vector length before inference
 - [x] Add a try/except around model.predict() in src/predict.py with a clear error message
 - [x] Add a CONTRIBUTING.md at repo root with setup steps and dataset download instructions
-- [ ] Add a .editorconfig at repo root (4-space indent, utf-8, lf)
+- [x] Add a .editorconfig at repo root (4-space indent, utf-8, lf)
 - [ ] Add a requirements-dev.txt with pytest and ruff
 - [ ] Add a pytest.ini at repo root with testpaths = ["tests"]
 - [ ] Create tests/test_smoke.py that imports src and asserts the module loads without error
