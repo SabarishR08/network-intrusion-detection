@@ -15,7 +15,7 @@
 - [x] Add a CONTRIBUTING.md at repo root with setup steps and dataset download instructions
 - [x] Add a .editorconfig at repo root (4-space indent, utf-8, lf)
 - [x] Add a requirements-dev.txt with pytest and ruff
-- [ ] Add a pytest.ini at repo root with testpaths = ["tests"]
+- [x] Add a pytest.ini at repo root with testpaths = ["tests"]
 - [ ] Create tests/test_smoke.py that imports src and asserts the module loads without error
 - [ ] Add a .gitattributes normalising line endings
 - [ ] Add __all__ to src/__init__.py listing public symbols
