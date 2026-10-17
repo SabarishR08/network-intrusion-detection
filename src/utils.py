@@ -6,7 +6,7 @@ import logging
 import time
 from functools import wraps
 from pathlib import Path
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable, Iterable, TypeVar
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
@@ -73,13 +73,31 @@ def retry_file_io(
     return decorator
 
 
-def read_file_with_retry(
-    reader_fn: Callable[..., RT],
-    *args: Any,
-    max_retries: int = 3,
-    delay: float = 0.1,
-    **kwargs: Any,
-) -> RT:
-    """Execute a file reading function (e.g. pd.read_csv) with automatic retry logic."""
-    wrapped = retry_file_io(reader_fn, max_retries=max_retries, delay=delay)
-    return wrapped(*args, **kwargs)
+def read_file_with_retry(reader_fn: Callable[..., RT], *args: Any, **kwargs: Any) -> RT:
+    """Execute a file reading function with retry logic."""
+    decorated = retry_file_io(reader_fn)
+    return decorated(*args, **kwargs)
+
+
+def validate_dataframe(df: Any, expected_columns: Iterable[str]) -> bool:
+    """Validate that a DataFrame contains all expected columns.
+
+    Args:
+        df: DataFrame or object with a `columns` attribute.
+        expected_columns: Iterable of column names required in df.
+
+    Returns:
+        True if all expected columns are present.
+
+    Raises:
+        TypeError: If df is None or lacks a `columns` attribute.
+        ValueError: If any expected column is missing.
+    """
+    if df is None or not hasattr(df, "columns"):
+        raise TypeError("Input 'df' must be a pandas DataFrame or have a 'columns' attribute.")
+
+    df_cols = set(df.columns)
+    missing = [col for col in expected_columns if col not in df_cols]
+    if missing:
+        raise ValueError(f"DataFrame is missing expected columns: {missing}")
+    return True
