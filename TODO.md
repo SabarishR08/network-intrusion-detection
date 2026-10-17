@@ -21,7 +21,7 @@
 - [x] Add __all__ to src/__init__.py listing public symbols
 - [ ] Add elapsed-time logging around the model training loop
 - [x] Add elapsed-time logging around the predict() call
-- [ ] Add a retry wrapper for any file I/O that could fail on missing dataset
+- [x] Add a retry wrapper for any file I/O that could fail on missing dataset
 - [ ] Add a validate_dataframe(df, expected_columns) helper in src/utils.py
 - [ ] Add a normalise_labels(y) helper that maps raw label strings to int class indices
 - [ ] Add a confusion_matrix summary log after model evaluation
