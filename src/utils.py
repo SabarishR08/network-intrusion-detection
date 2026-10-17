@@ -1,80 +1,85 @@
-"""Shared utilities for the PS40 Network Intrusion Detection project."""
+"""Utility functions, retry helpers, and path management for PS40 Network Intrusion Detection."""
 
 from __future__ import annotations
 
-import json
 import logging
-import os
-import zipfile
+import time
+from functools import wraps
 from pathlib import Path
-from typing import Iterable
-
+from typing import Any, Callable, TypeVar
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
-RAW_DIR = DATA_DIR / "raw"
-PROCESSED_DIR = DATA_DIR / "processed"
+RAW_DATA_DIR = DATA_DIR / "raw"
+PROCESSED_DATA_DIR = DATA_DIR / "processed"
 MODEL_DIR = PROJECT_ROOT / "models"
 REPORT_DIR = PROJECT_ROOT / "reports"
 FIGURES_DIR = REPORT_DIR / "figures"
-SCREENSHOTS_DIR = PROJECT_ROOT / "screenshots"
-SOURCE_ZIP = PROJECT_ROOT.parent / "Network Intrusion Detection.zip"
-ROOT_ZIP = PROJECT_ROOT / "Network Intrusion Detection.zip"
 
-
-def configure_logging(level: int = logging.INFO) -> None:
-    logging.basicConfig(
-        level=level,
-        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
+logger = logging.getLogger(__name__)
 
 
 def ensure_directories() -> None:
-    for directory in [RAW_DIR, PROCESSED_DIR, MODEL_DIR, REPORT_DIR, FIGURES_DIR, SCREENSHOTS_DIR]:
-        directory.mkdir(parents=True, exist_ok=True)
+    """Ensure essential project directories exist."""
+    for path in [DATA_DIR, RAW_DATA_DIR, PROCESSED_DATA_DIR, MODEL_DIR, REPORT_DIR, FIGURES_DIR]:
+        path.mkdir(parents=True, exist_ok=True)
 
 
-def candidate_dataset_paths() -> list[Path]:
-    return [
-        RAW_DIR / "Train_data.csv",
-        RAW_DIR / "Test_data.csv",
-        PROJECT_ROOT / "data" / "Train_data.csv",
-        PROJECT_ROOT / "data" / "Test_data.csv",
-        PROJECT_ROOT.parent / "data" / "Train_data.csv",
-        PROJECT_ROOT.parent / "data" / "Test_data.csv",
-    ]
+RT = TypeVar("RT")
 
 
-def ensure_dataset_available() -> None:
-    ensure_directories()
-    train_exists = (RAW_DIR / "Train_data.csv").exists()
-    test_exists = (RAW_DIR / "Test_data.csv").exists()
-    if train_exists and test_exists:
-        return
+def retry_file_io(
+    fn: Callable[..., Any] | None = None,
+    *,
+    max_retries: int = 3,
+    delay: float = 0.1,
+    backoff: float = 2.0,
+    exceptions: tuple[type[BaseException], ...] = (FileNotFoundError, OSError, IOError),
+) -> Any:
+    """Retry wrapper/decorator for file I/O operations that may fail on missing or busy datasets."""
 
-    for fallback in [SOURCE_ZIP, ROOT_ZIP]:
-        if fallback.exists():
-            with zipfile.ZipFile(fallback) as archive:
-                archive.extractall(RAW_DIR)
-            return
+    def decorator(func: Callable[..., RT]) -> Callable[..., RT]:
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> RT:
+            current_delay = delay
+            for attempt in range(1, max_retries + 1):
+                try:
+                    return func(*args, **kwargs)
+                except exceptions as err:
+                    if attempt == max_retries:
+                        logger.error(
+                            "File I/O operation %s failed after %d attempts: %s",
+                            getattr(func, "__name__", str(func)),
+                            max_retries,
+                            err,
+                        )
+                        raise
+                    logger.warning(
+                        "Attempt %d/%d failed for %s (%s). Retrying in %.2fs...",
+                        attempt,
+                        max_retries,
+                        getattr(func, "__name__", str(func)),
+                        err,
+                        current_delay,
+                    )
+                    time.sleep(current_delay)
+                    current_delay *= backoff
+            return func(*args, **kwargs)
 
-    source_dir = PROJECT_ROOT.parent / "Network Intrusion Detection"
-    if source_dir.exists():
-        for name in ["Train_data.csv", "Test_data.csv"]:
-            source_file = source_dir / name
-            if source_file.exists():
-                (RAW_DIR / name).write_bytes(source_file.read_bytes())
-        if (RAW_DIR / "Train_data.csv").exists() and (RAW_DIR / "Test_data.csv").exists():
-            return
+        return wrapper
 
-    raise FileNotFoundError("Could not locate Train_data.csv and Test_data.csv.")
+    if fn is not None and callable(fn):
+        return decorator(fn)
+    return decorator
 
 
-def write_json(path: Path, payload: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-
-
-def flatten(items: Iterable[Iterable[str]]) -> list[str]:
-    return [value for group in items for value in group]
+def read_file_with_retry(
+    reader_fn: Callable[..., RT],
+    *args: Any,
+    max_retries: int = 3,
+    delay: float = 0.1,
+    **kwargs: Any,
+) -> RT:
+    """Execute a file reading function (e.g. pd.read_csv) with automatic retry logic."""
+    wrapped = retry_file_io(reader_fn, max_retries=max_retries, delay=delay)
+    return wrapped(*args, **kwargs)
