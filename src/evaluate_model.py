@@ -1,26 +1,45 @@
-'''Evaluation helpers for the PS40 intrusion detection project.'''
+"""Model evaluation module for logging metrics and confusion matrix summaries."""
 
 from __future__ import annotations
 
-import json
 import logging
-from pathlib import Path
+from typing import Any
 
-import matplotlib.pyplot as plt
-import pandas as pd
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
 
 logger = logging.getLogger(__name__)
 
-def export_evaluation_report(y_true, y_pred, labels: list[str], output_dir: Path) -> dict:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    report = classification_report(y_true, y_pred, labels=[0, 1], target_names=labels, zero_division=0, output_dict=True)
-    confusion = confusion_matrix(y_true, y_pred, labels=[0, 1]).tolist()
-    payload = {"classification_report": report, "confusion_matrix": confusion}
-    (output_dir / "evaluation.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    return payload
 
+def evaluate_model(y_true: Any, y_pred: Any, y_prob: Any | None = None) -> dict[str, Any]:
+    """Evaluate model predictions and log confusion matrix summary."""
+    cm = confusion_matrix(y_true, y_pred)
+    acc = float(accuracy_score(y_true, y_pred))
+    prec = float(precision_score(y_true, y_pred, average="weighted", zero_division=0))
+    rec = float(recall_score(y_true, y_pred, average="weighted", zero_division=0))
+    f1 = float(f1_score(y_true, y_pred, average="weighted", zero_division=0))
 
-def save_summary_table(summary: dict, output_path: Path) -> None:
-    frame = pd.DataFrame([summary])
-    frame.to_csv(output_path, index=False)
+    logger.info("Confusion matrix summary:\n%s", cm)
+    logger.info("Accuracy: %.4f, Precision: %.4f, Recall: %.4f, F1: %.4f", acc, prec, rec, f1)
+
+    metrics: dict[str, Any] = {
+        "accuracy": acc,
+        "precision": prec,
+        "recall": rec,
+        "f1": f1,
+        "confusion_matrix": cm.tolist(),
+    }
+
+    if y_prob is not None:
+        try:
+            metrics["roc_auc"] = float(roc_auc_score(y_true, y_prob))
+        except Exception:
+            pass
+
+    return metrics
