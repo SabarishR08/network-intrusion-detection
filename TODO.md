@@ -23,7 +23,7 @@
 - [x] Add elapsed-time logging around the predict() call
 - [x] Add a retry wrapper for any file I/O that could fail on missing dataset
 - [x] Add a validate_dataframe(df, expected_columns) helper in src/utils.py
-- [ ] Add a normalise_labels(y) helper that maps raw label strings to int class indices
+- [x] Add a normalise_labels(y) helper that maps raw label strings to int class indices
 - [x] Add a confusion_matrix summary log after model evaluation
 - [ ] Add a save_model_metadata() function that writes model name, date, and accuracy to JSON
 - [ ] Add a load_model_with_fallback() that logs a warning if model file is missing
