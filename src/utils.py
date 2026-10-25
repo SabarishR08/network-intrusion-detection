@@ -1,42 +1,48 @@
+"""Utility functions for path handling, directory setup, and metadata logging."""
+
 from __future__ import annotations
 
-import logging
-import pickle
+import json
+from datetime import datetime, timezone
 from pathlib import Path
 
-# Existing constants (preserved)
-FIGURES_DIR = Path(__file__).resolve().parents[1] / "reports" / "figures"
-MODEL_DIR = Path(__file__).resolve().parents[1] / "models"
-REPORT_DIR = Path(__file__).resolve().parents[1] / "reports"
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+MODEL_DIR = PROJECT_ROOT / "models"
+REPORT_DIR = PROJECT_ROOT / "reports"
+FIGURES_DIR = REPORT_DIR / "figures"
 
 
 def ensure_directories() -> None:
-    """Create essential project directories if they do not exist."""
-    for d in (FIGURES_DIR, MODEL_DIR, REPORT_DIR):
-        d.mkdir(parents=True, exist_ok=True)
+    """Ensure essential project output directories exist."""
+    for directory in (MODEL_DIR, REPORT_DIR, FIGURES_DIR):
+        directory.mkdir(parents=True, exist_ok=True)
 
 
-def load_model_with_fallback(model_path: str | Path) -> object | None:
-    """Load a pickled model, returning ``None`` and logging a warning if the file is missing.
+def save_model_metadata(
+    model_name: str,
+    accuracy: float,
+    output_path: str | Path | None = None,
+    date: str | None = None,
+) -> Path:
+    """Save model metadata (model name, date, and accuracy) to a JSON file."""
+    ensure_directories()
+    if output_path is None:
+        output_path = REPORT_DIR / "model_metadata.json"
+    else:
+        output_path = Path(output_path)
 
-    Parameters
-    ----------
-    model_path: str | Path
-        Path to the model file (typically a ``.pkl`` file).
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    Returns
-    -------
-    object | None
-        The deserialized model object, or ``None`` when the file does not exist.
-    """
-    path = Path(model_path)
-    logger = logging.getLogger(__name__)
-    if not path.is_file():
-        logger.warning("Model file %s not found; returning None.", path)
-        return None
-    try:
-        with path.open("rb") as f:
-            return pickle.load(f)
-    except Exception as exc:
-        logger.warning("Failed to load model from %s: %s", path, exc)
-        return None
+    if date is None:
+        date = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+
+    metadata = {
+        "model_name": model_name,
+        "date": date,
+        "accuracy": float(accuracy),
+    }
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(metadata, f, indent=4)
+
+    return output_path
