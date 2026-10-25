@@ -25,7 +25,7 @@
 - [x] Add a validate_dataframe(df, expected_columns) helper in src/utils.py
 - [x] Add a normalise_labels(y) helper that maps raw label strings to int class indices
 - [x] Add a confusion_matrix summary log after model evaluation
-- [ ] Add a save_model_metadata() function that writes model name, date, and accuracy to JSON
+- [x] Add a save_model_metadata() function that writes model name, date, and accuracy to JSON
 - [x] Add a load_model_with_fallback() that logs a warning if model file is missing
 - [ ] Add a dataclass PredictionResult(label, confidence, elapsed_ms) replacing plain dict
 - [ ] Add a dataclass TrainingMetrics(accuracy, precision, recall, f1) for evaluation output
