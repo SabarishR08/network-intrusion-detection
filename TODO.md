@@ -26,7 +26,7 @@
 - [x] Add a normalise_labels(y) helper that maps raw label strings to int class indices
 - [x] Add a confusion_matrix summary log after model evaluation
 - [ ] Add a save_model_metadata() function that writes model name, date, and accuracy to JSON
-- [ ] Add a load_model_with_fallback() that logs a warning if model file is missing
+- [x] Add a load_model_with_fallback() that logs a warning if model file is missing
 - [ ] Add a dataclass PredictionResult(label, confidence, elapsed_ms) replacing plain dict
 - [ ] Add a dataclass TrainingMetrics(accuracy, precision, recall, f1) for evaluation output
 - [ ] Add a CLI --evaluate flag to main.py that runs evaluation and prints metrics
