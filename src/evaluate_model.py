@@ -1,45 +1,29 @@
-"""Model evaluation module for logging metrics and confusion matrix summaries."""
+"""Evaluation module for the intrusion detection pipeline."""
 
 from __future__ import annotations
 
-import logging
+from dataclasses import asdict, dataclass
 from typing import Any
 
-from sklearn.metrics import (
-    accuracy_score,
-    confusion_matrix,
-    f1_score,
-    precision_score,
-    recall_score,
-    roc_auc_score,
-)
-
-logger = logging.getLogger(__name__)
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
 
-def evaluate_model(y_true: Any, y_pred: Any, y_prob: Any | None = None) -> dict[str, Any]:
-    """Evaluate model predictions and log confusion matrix summary."""
-    cm = confusion_matrix(y_true, y_pred)
-    acc = float(accuracy_score(y_true, y_pred))
-    prec = float(precision_score(y_true, y_pred, average="weighted", zero_division=0))
-    rec = float(recall_score(y_true, y_pred, average="weighted", zero_division=0))
-    f1 = float(f1_score(y_true, y_pred, average="weighted", zero_division=0))
+@dataclass
+class TrainingMetrics:
+    accuracy: float
+    precision: float
+    recall: float
+    f1: float
 
-    logger.info("Confusion matrix summary:\n%s", cm)
-    logger.info("Accuracy: %.4f, Precision: %.4f, Recall: %.4f, F1: %.4f", acc, prec, rec, f1)
+    def to_dict(self) -> dict[str, float]:
+        return asdict(self)
 
-    metrics: dict[str, Any] = {
-        "accuracy": acc,
-        "precision": prec,
-        "recall": rec,
-        "f1": f1,
-        "confusion_matrix": cm.tolist(),
-    }
 
-    if y_prob is not None:
-        try:
-            metrics["roc_auc"] = float(roc_auc_score(y_true, y_prob))
-        except Exception:
-            pass
-
-    return metrics
+def calculate_metrics(y_true: Any, y_pred: Any) -> TrainingMetrics:
+    """Calculate evaluation metrics for model predictions."""
+    return TrainingMetrics(
+        accuracy=float(accuracy_score(y_true, y_pred)),
+        precision=float(precision_score(y_true, y_pred, average="weighted", zero_division=0)),
+        recall=float(recall_score(y_true, y_pred, average="weighted", zero_division=0)),
+        f1=float(f1_score(y_true, y_pred, average="weighted", zero_division=0)),
+    )
