@@ -1,64 +1,100 @@
-"""Prediction utilities for the PS40 intrusion detection model."""
+"""Prediction functionality for the PS40 Network Intrusion Detection system."""
 
 from __future__ import annotations
 
-import argparse
-import logging
 import time
+from dataclasses import asdict, dataclass
 from pathlib import Path
+from typing import Any
 
+import joblib
 import pandas as pd
 
-from utils import MODEL_DIR, REPORT_DIR, ensure_directories
-from joblib import load
-
-logger = logging.getLogger(__name__)
+from utils import MODEL_DIR
 
 
-def load_bundle():
-    """Load the model bundle (model, scaler, encoders, etc.)."""
-    # Placeholder implementation – actual loading logic is unchanged.
-    model_path = MODEL_DIR / "model.pkl"
-    scaler_path = MODEL_DIR / "scaler.pkl"
-    encoders_path = MODEL_DIR / "encoders.pkl"
-    model = load(model_path)
-    scaler = load(scaler_path)
-    encoders = load(encoders_path)
+@dataclass
+class PredictionResult:
+    label: str
+    confidence: float
+    elapsed_ms: float
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+def load_bundle(model_dir: Path | str | None = None) -> dict[str, Any]:
+    path = Path(model_dir) if model_dir else MODEL_DIR
+    model = joblib.load(path / "model.pkl")
+    scaler = joblib.load(path / "scaler.pkl")
+    encoders = joblib.load(path / "encoders.pkl")
     return {"model": model, "scaler": scaler, "encoders": encoders}
 
 
-def predict_frame(df: pd.DataFrame, bundle: dict) -> pd.DataFrame:
-    """Generate predictions for a DataFrame using the loaded bundle.
+def predict_single(sample: dict[str, Any] | pd.Series, bundle: dict[str, Any]) -> PredictionResult:
+    start_time = time.perf_counter()
+    if isinstance(sample, dict):
+        df = pd.DataFrame([sample])
+    else:
+        df = pd.DataFrame([sample.to_dict()])
 
-    The function's core logic is unchanged; only the surrounding timing
-    is added in the ``main`` entry point.
-    """
-    # Placeholder implementation – replace with actual feature processing and model inference.
+    preds, probs = predict_frame(df, bundle)
+    elapsed_ms = (time.perf_counter() - start_time) * 1000.0
+
+    label = str(preds[0])
+    confidence = float(probs[0]) if probs is not None and len(probs) > 0 else 1.0
+
+    return PredictionResult(label=label, confidence=confidence, elapsed_ms=round(elapsed_ms, 2))
+
+
+def predict_frame(df: pd.DataFrame, bundle: dict[str, Any]) -> tuple[list[str], list[float]]:
     model = bundle["model"]
-    # Assume the model has a ``predict`` method that works on a DataFrame.
-    predictions = model.predict(df)
-    result = df.copy()
-    result["prediction"] = predictions
-    return result
+    scaler = bundle.get("scaler")
+    encoders = bundle.get("encoders", {})
+
+    data = df.copy()
+
+    for col, enc in encoders.items():
+        if col in data.columns:
+            try:
+                data[col] = enc.transform(data[col].astype(str))
+            except Exception:
+                pass
+
+    if scaler is not None and hasattr(scaler, "transform"):
+        try:
+            features = scaler.transform(data)
+        except Exception:
+            features = data
+    else:
+        features = data
+
+    preds = model.predict(features)
+
+    if hasattr(model, "predict_proba"):
+        probs_array = model.predict_proba(features)
+        probs = [float(max(p)) for p in probs_array]
+    else:
+        probs = [1.0] * len(preds)
+
+    return list(preds), probs
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run predictions on a CSV input file.")
-    parser.add_argument("--input", required=True, help="Path to input CSV file.")
-    parser.add_argument("--output", required=True, help="Path to write output CSV with predictions.")
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Predict using trained NIDS model")
+    parser.add_argument("--input", required=True, help="Path to input CSV file")
+    parser.add_argument("--output", required=True, help="Path to save predictions CSV")
     args = parser.parse_args()
 
-    ensure_directories()
     bundle = load_bundle()
-    df = pd.read_csv(Path(args.input))
-
-    logger.info("Starting prediction for %s rows", len(df))
-    start_time = time.time()
-    preds = predict_frame(df, bundle)
-    elapsed = time.time() - start_time
-    logger.info("Prediction completed in %.3f seconds", elapsed)
-
-    Path(args.output).write_text(preds.to_csv(index=False), encoding="utf-8")
+    df = pd.read_csv(args.input)
+    preds, probs = predict_frame(df, bundle)
+    df["prediction"] = preds
+    df["confidence"] = probs
+    df.to_csv(args.output, index=False)
+    print(f"Predictions saved to {args.output}")
 
 
 if __name__ == "__main__":
