@@ -29,7 +29,7 @@
 - [x] Add a load_model_with_fallback() that logs a warning if model file is missing
 - [x] Add a dataclass PredictionResult(label, confidence, elapsed_ms) replacing plain dict
 - [x] Add a dataclass TrainingMetrics(accuracy, precision, recall, f1) for evaluation output
-- [ ] Add a CLI --evaluate flag to main.py that runs evaluation and prints metrics
+- [x] Add a CLI --evaluate flag to main.py that runs evaluation and prints metrics
 - [ ] Add a CLI --version flag to main.py that prints the version from src/__init__.py
 - [ ] Add a brief Architecture section to README.md describing the preprocessing pipeline
 
