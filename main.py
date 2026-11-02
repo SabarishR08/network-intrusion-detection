@@ -8,6 +8,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from src import __version__
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 
@@ -40,6 +42,11 @@ def run_evaluation() -> int:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="PS40 project launcher")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+    )
     parser.add_argument(
         "command",
         nargs="?",
