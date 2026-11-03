@@ -6,6 +6,7 @@ This module provides functions for loading datasets, normalizing labels, splitti
 from __future__ import annotations
 
 import logging
+import builtins
 from dataclasses import dataclass
 
 import numpy as np
@@ -18,6 +19,17 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from .utils import RAW_DIR, ensure_dataset_available
 
 LOGGER = logging.getLogger(__name__)
+
+# Redirect any stray print calls to the module logger
+def _log_print(*args, **kwargs):
+    """Log messages that were originally sent to stdout via print()."""
+    # Join positional arguments with spaces, mimicking print's default separator
+    message = " ".join(str(a) for a in args)
+    LOGGER.info(message)
+
+# Override built‑in print within this module's scope
+builtins.print = _log_print
+
 TARGET_COLUMN = "class"
 CATEGORICAL_COLUMNS = ["protocol_type", "service", "flag"]
 LABEL_MAP = {"anomaly": 0, "normal": 1}
@@ -77,7 +89,5 @@ def build_preprocessor(feature_frame: pd.DataFrame) -> ColumnTransformer:
         transformers=[
             ("categorical", categorical_pipeline, CATEGORICAL_COLUMNS),
             ("numeric", numeric_pipeline, numeric_columns),
-        ],
-        remainder="drop",
-        verbose_feature_names_out=False,
+        ]
     )
