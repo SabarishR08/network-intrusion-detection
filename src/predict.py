@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+import logging
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -11,6 +12,9 @@ import joblib
 import pandas as pd
 
 from utils import MODEL_DIR
+
+# Module level logger
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -85,17 +89,25 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(description="Predict using trained NIDS model")
     parser.add_argument("--input", required=True, help="Path to input CSV file")
-    parser.add_argument("--output", required=True, help="Path to save predictions CSV")
+    parser.add_argument("--output", required=True, help="Path to write predictions CSV")
     args = parser.parse_args()
 
+    logger.info("Loading model bundle")
     bundle = load_bundle()
-    df = pd.read_csv(args.input)
-    preds, probs = predict_frame(df, bundle)
-    df["prediction"] = preds
-    df["confidence"] = probs
-    df.to_csv(args.output, index=False)
-    print(f"Predictions saved to {args.output}")
 
+    logger.info("Reading input data from %s", args.input)
+    df_input = pd.read_csv(args.input)
+
+    logger.info("Running predictions")
+    preds, probs = predict_frame(df_input, bundle)
+
+    df_input["prediction"] = preds
+    df_input["confidence"] = probs
+
+    logger.info("Writing predictions to %s", args.output)
+    df_input.to_csv(args.output, index=False)
+
+    logger.info("Prediction completed")
 
 if __name__ == "__main__":
     main()
