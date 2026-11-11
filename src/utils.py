@@ -1,4 +1,11 @@
-"""Utility functions for path handling, directory setup, and metadata logging."""
+"""Shared utility functions and path definitions for the project.
+
+Provides helper routines and directory paths used across training, evaluation,
+and prediction workflows:
+- Path constants: PROJECT_ROOT, MODEL_DIR, REPORT_DIR, FIGURES_DIR
+- ensure_directories: Creates required output directory structures
+- save_model_metadata: Serializes model run metrics and timestamps to JSON
+"""
 
 from __future__ import annotations
 
