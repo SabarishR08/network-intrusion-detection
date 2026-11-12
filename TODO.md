@@ -39,7 +39,7 @@
 - [x] Add logging.getLogger(__name__) to src/feature_engineering.py replacing bare print() calls
 - [x] Add logging.getLogger(__name__) to src/predict.py replacing bare print() calls
 - [x] Add a module-level docstring to src/utils.py describing the shared helpers
-- [ ] Add type hints to all function signatures in src/utils.py
+- [x] Add type hints to all function signatures in src/utils.py
 - [ ] Add type hints to all function signatures in src/feature_engineering.py
 - [ ] Add a module-level docstring to scripts/create_demo.py describing what the demo script generates
 - [ ] Add a module-level docstring to app/streamlit_app.py describing the dashboard layout

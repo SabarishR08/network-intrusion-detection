@@ -13,10 +13,10 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-MODEL_DIR = PROJECT_ROOT / "models"
-REPORT_DIR = PROJECT_ROOT / "reports"
-FIGURES_DIR = REPORT_DIR / "figures"
+PROJECT_ROOT: Path = Path(__file__).resolve().parents[1]
+MODEL_DIR: Path = PROJECT_ROOT / "models"
+REPORT_DIR: Path = PROJECT_ROOT / "reports"
+FIGURES_DIR: Path = REPORT_DIR / "figures"
 
 
 def ensure_directories() -> None:
@@ -34,22 +34,23 @@ def save_model_metadata(
     """Save model metadata (model name, date, and accuracy) to a JSON file."""
     ensure_directories()
     if output_path is None:
-        output_path = REPORT_DIR / "model_metadata.json"
+        target_path: Path = REPORT_DIR / "model_metadata.json"
     else:
-        output_path = Path(output_path)
+        target_path = Path(output_path)
 
-    output_path.parent.mkdir(parents=True, exist_ok=True)
+    target_path.parent.mkdir(parents=True, exist_ok=True)
 
-    if date is None:
-        date = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    formatted_date: str = (
+        date if date is not None else datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    )
 
-    metadata = {
+    metadata: dict[str, str | float] = {
         "model_name": model_name,
-        "date": date,
+        "date": formatted_date,
         "accuracy": float(accuracy),
     }
 
-    with open(output_path, "w", encoding="utf-8") as f:
+    with open(target_path, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=4)
 
-    return output_path
+    return target_path
