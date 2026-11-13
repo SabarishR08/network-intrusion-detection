@@ -11,7 +11,10 @@ from typing import Any
 import joblib
 import pandas as pd
 
-from utils import MODEL_DIR
+try:
+    from .utils import MODEL_DIR
+except ImportError:
+    from utils import MODEL_DIR
 
 # Module level logger
 logger = logging.getLogger(__name__)
