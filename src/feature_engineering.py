@@ -5,12 +5,13 @@ The align_features function ensures that a DataFrame contains all expected colum
 from __future__ import annotations
 
 import logging
+from typing import List
 import pandas as pd
 
 logger = logging.getLogger(__name__)
 
 
-def align_features(frame: pd.DataFrame, expected_columns: list[str]) -> pd.DataFrame:
+def align_features(frame: pd.DataFrame, expected_columns: List[str]) -> pd.DataFrame:
     aligned = frame.copy()
     for column in expected_columns:
         if column not in aligned.columns:
