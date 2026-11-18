@@ -1,3 +1,8 @@
+"""Create a sample demo dataset for inference testing.
+
+Reads raw training data, samples 100 unlabelled rows, and saves
+the output to samples/demo_input.csv for quick demo execution.
+"""
 import pandas as pd
 from pathlib import Path
 p=Path('data/raw/Train_data.csv')
