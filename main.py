@@ -10,7 +10,6 @@ from pathlib import Path
 
 from src import __version__
 
-
 PROJECT_ROOT = Path(__file__).resolve().parent
 
 
@@ -63,7 +62,8 @@ def main() -> None:
     if not args.command:
         parser.error("the following arguments are required: command")
     if args.command == "train":
-        raise SystemExit(run_module("src.train_model"))
+        # Use the wrapper that logs elapsed time around training
+        raise SystemExit(run_module("src.train_wrapper"))
     if args.command == "predict":
         if not args.input or not args.output:
             raise SystemExit("--input and --output are required for predict")

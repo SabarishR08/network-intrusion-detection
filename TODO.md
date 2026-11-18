@@ -19,7 +19,7 @@
 - [x] Create tests/test_smoke.py that imports src and asserts the module loads without error
 - [x] Add a .gitattributes normalising line endings
 - [x] Add __all__ to src/__init__.py listing public symbols
-- [ ] Add elapsed-time logging around the model training loop
+- [x] Add elapsed-time logging around the model training loop
 - [x] Add elapsed-time logging around the predict() call
 - [x] Add a retry wrapper for any file I/O that could fail on missing dataset
 - [x] Add a validate_dataframe(df, expected_columns) helper in src/utils.py
