@@ -41,7 +41,7 @@
 - [x] Add a module-level docstring to src/utils.py describing the shared helpers
 - [x] Add type hints to all function signatures in src/utils.py
 - [x] Add type hints to all function signatures in src/feature_engineering.py
-- [ ] Add a module-level docstring to scripts/create_demo.py describing what the demo script generates
+- [x] Add a module-level docstring to scripts/create_demo.py describing what the demo script generates
 - [ ] Add a module-level docstring to app/streamlit_app.py describing the dashboard layout
 
 
