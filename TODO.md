@@ -42,7 +42,7 @@
 - [x] Add type hints to all function signatures in src/utils.py
 - [x] Add type hints to all function signatures in src/feature_engineering.py
 - [x] Add a module-level docstring to scripts/create_demo.py describing what the demo script generates
-- [ ] Add a module-level docstring to app/streamlit_app.py describing the dashboard layout
+- [x] Add a module-level docstring to app/streamlit_app.py describing the dashboard layout
 
 
 <!-- backlog top-up 2026-09-19 batch 2 (file+verb deduped) -->
