@@ -1,4 +1,11 @@
-"""Evaluation module for the intrusion detection pipeline."""
+"""Evaluation module for the intrusion detection pipeline.
+
+Provides structured evaluation metrics for model predictions:
+- Accuracy: Overall proportion of correct predictions across all classes.
+- Precision: Weighted average precision accounting for class support.
+- Recall: Weighted average recall (sensitivity) across classes.
+- F1: Weighted harmonic mean of precision and recall.
+"""
 
 from __future__ import annotations
 
