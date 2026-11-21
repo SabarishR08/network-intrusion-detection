@@ -46,7 +46,7 @@
 
 
 <!-- backlog top-up 2026-09-19 batch 2 (file+verb deduped) -->
-- [ ] Add a module-level docstring to src/evaluate_model.py describing the evaluation metrics
+- [x] Add a module-level docstring to src/evaluate_model.py describing the evaluation metrics
 - [ ] Add a module-level docstring to src/train_model.py describing the training pipeline
 - [ ] Add a module-level docstring to src/predict.py describing the prediction entry point
 - [ ] Add a module-level docstring to src/data_preprocessing.py describing the preprocessing steps
