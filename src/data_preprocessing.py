@@ -1,6 +1,14 @@
 """Data loading and preprocessing helpers for the intrusion detection pipeline.
 
-This module provides functions for loading datasets, normalizing labels, splitting features and targets, and building preprocessing pipelines.
+This module provides functions for loading raw network datasets, normalizing labels,
+splitting features and targets, and building scikit-learn preprocessing pipelines.
+
+Preprocessing steps include:
+- Data loading: Reading raw training and test datasets.
+- Label normalization & encoding: Mapping raw target class strings ('normal', 'anomaly', etc.) to binary targets (0: anomaly, 1: normal).
+- Feature/target separation: Splitting target columns from feature sets.
+- Numeric preprocessing: Applying median imputation followed by StandardScaler scaling to numeric features.
+- Categorical preprocessing: Applying most-frequent imputation and OneHotEncoding to categorical features ('protocol_type', 'service', 'flag').
 """
 
 from __future__ import annotations
@@ -73,21 +81,15 @@ def build_preprocessor(feature_frame: pd.DataFrame) -> ColumnTransformer:
     except TypeError:
         one_hot = OneHotEncoder(handle_unknown="ignore", sparse=False)
 
-    categorical_pipeline = Pipeline(
-        steps=[
-            ("imputer", SimpleImputer(strategy="most_frequent")),
-            ("one_hot", one_hot),
-        ]
-    )
-    numeric_pipeline = Pipeline(
-        steps=[
-            ("imputer", SimpleImputer(strategy="median")),
-            ("scaler", StandardScaler()),
-        ]
-    )
-    return ColumnTransformer(
-        transformers=[
-            ("categorical", categorical_pipeline, CATEGORICAL_COLUMNS),
-            ("numeric", numeric_pipeline, numeric_columns),
-        ]
-    )
+    numeric_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scaler", StandardScaler()),
+    ])
+    categorical_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("encoder", one_hot),
+    ])
+    return ColumnTransformer([
+        ("num", numeric_transformer, numeric_columns),
+        ("cat", categorical_transformer, CATEGORICAL_COLUMNS),
+    ])
