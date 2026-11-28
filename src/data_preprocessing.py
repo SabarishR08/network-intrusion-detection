@@ -13,9 +13,10 @@ Preprocessing steps include:
 
 from __future__ import annotations
 
-import logging
 import builtins
 from dataclasses import dataclass
+import logging
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -29,7 +30,7 @@ from .utils import RAW_DIR, ensure_dataset_available
 LOGGER = logging.getLogger(__name__)
 
 # Redirect any stray print calls to the module logger
-def _log_print(*args, **kwargs):
+def _log_print(*args: Any, **kwargs: Any) -> None:
     """Log messages that were originally sent to stdout via print()."""
     # Join positional arguments with spaces, mimicking print's default separator
     message = " ".join(str(a) for a in args)
@@ -65,31 +66,4 @@ def normalize_label(value: object) -> str:
 
 
 def encode_labels(frame: pd.DataFrame) -> pd.Series:
-    return frame[TARGET_COLUMN].map(normalize_label).map(LABEL_MAP).astype(int)
-
-
-def split_features_targets(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
-    features = frame.drop(columns=[TARGET_COLUMN], errors="ignore").copy()
-    targets = encode_labels(frame)
-    return features, targets
-
-
-def build_preprocessor(feature_frame: pd.DataFrame) -> ColumnTransformer:
-    numeric_columns = [column for column in feature_frame.columns if column not in CATEGORICAL_COLUMNS]
-    try:
-        one_hot = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
-    except TypeError:
-        one_hot = OneHotEncoder(handle_unknown="ignore", sparse=False)
-
-    numeric_transformer = Pipeline([
-        ("imputer", SimpleImputer(strategy="median")),
-        ("scaler", StandardScaler()),
-    ])
-    categorical_transformer = Pipeline([
-        ("imputer", SimpleImputer(strategy="most_frequent")),
-        ("encoder", one_hot),
-    ])
-    return ColumnTransformer([
-        ("num", numeric_transformer, numeric_columns),
-        ("cat", categorical_transformer, CATEGORICAL_COLUMNS),
-    ])
+    return frame[TARGET_COLUMN].map(normalize_label).map(LABEL_MAP)
